@@ -193,6 +193,10 @@ Gjallarhorn.prototype.tracking = function tracking(round) {
   .once('exit', retry)
   .once('error', retry)
   .on('message', round.message || function message(data) {
+    if (data.__finished === true) {
+      return round.ref.disconnect();
+    }
+
     messages.push(data);
   });
 

@@ -26,7 +26,7 @@ describe('gjallarhorn', function () {
     ghorn.reload(function factory(name) {
       if (!(name in fixtures)) return false;
 
-      return fork(path.join(__dirname, 'fixtures', name +'.js'), {
+      return fork(path.join(__dirname, 'fixtures', name + '.js'), {
         silent: true
       });
     });
@@ -109,6 +109,7 @@ describe('gjallarhorn', function () {
 
       ghorn.launch('messages', {
         message: function received(msg) {
+          if (msg.__finished) return;
           assume(msg.message).is.between(1, 2);
         }
       }, function (err, data) {

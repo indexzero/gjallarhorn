@@ -81,6 +81,25 @@ ghorn.launch({ data: 'send' }, function (err, messages) {
 If the nothing is returned by the factory function we assume that no process
 should be spawned and no orchestration is required.
 
+### Writing scripts for Gjallarhorn
+
+By default Gjallarhorn will continue to queue all messages from child processes that are spawned until it receives a message with `{ __finished: true }`. For example:
+
+``` js
+
+process.on('message', function (data) {
+  console.log('received from Gjallarhorn: %j', data);
+
+  if (data.foo) {
+    process.send({ bar: true });
+  } else if (data.bar) {
+    process.send({ foo: true });
+  }
+
+  process.send({ __finished: true });
+});
+```
+
 ### API
 
 The following methods are available on the constructed instance:
